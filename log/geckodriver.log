@@ -181,3 +181,73 @@ console.error: PushService:
   stateChangeProcessEnqueue: Error transitioning state
   UnknownError
 1582518690942	Marionette	INFO	New connections will no longer be accepted
+1582520853534	geckodriver	INFO	Listening on 127.0.0.1:49631
+1582520858461	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe with args ["-marionette"]
+1582520858852	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing background.persistent: Event pages are not currently supported. This will run as a persistent background page.
+1582520858856	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing options_page: An unexpected property was found in the WebExtension manifest.
+1582520858856	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing sandbox: An unexpected property was found in the WebExtension manifest.
+1582520858916	addons.xpi	ERROR	Failed to process extension changes at startup: TypeError: aAddon._installLocation is undefined (resource://gre/modules/addons/XPIProvider.jsm:728:1) JS Stack trace: canRunInSafeMode@XPIProvider.jsm:728:1 < this.XPIProvider.callBootstrapMethod@XPIProvider.jsm:4885:76 < processFileChanges@XPIProviderUtils.js:2212:9 < this.XPIProvider.checkForChanges@XPIProvider.jsm:3826:34 < this.XPIProvider.startup@XPIProvider.jsm:2830:25 < callProvider@AddonManager.jsm:237:12 < _startProvider@AddonManager.jsm:790:5 < AddonManagerInternal.startup@AddonManager.jsm:976:9 < this.AddonManagerPrivate.startup@AddonManager.jsm:3033:5 < amManager.prototype.observe@addonManager.js:65:9
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
+1582520859204	Marionette	INFO	Listening on port 49639
+JavaScript warning: chrome://imacros/content/MacroPlayer.js, line 1312: unreachable code after return statement
+1582520859662	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: PushService: 
+  stateChangeProcessEnqueue: Error transitioning state
+  UnknownError
+1582520870126	Marionette	INFO	New connections will no longer be accepted
+1582520871146	geckodriver	INFO	Listening on 127.0.0.1:49718
+1582520876048	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe with args ["-marionette"]
+1582520876440	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing background.persistent: Event pages are not currently supported. This will run as a persistent background page.
+1582520876444	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing options_page: An unexpected property was found in the WebExtension manifest.
+1582520876444	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing sandbox: An unexpected property was found in the WebExtension manifest.
+1582520876506	addons.xpi	ERROR	Failed to process extension changes at startup: TypeError: aAddon._installLocation is undefined (resource://gre/modules/addons/XPIProvider.jsm:728:1) JS Stack trace: canRunInSafeMode@XPIProvider.jsm:728:1 < this.XPIProvider.callBootstrapMethod@XPIProvider.jsm:4885:76 < processFileChanges@XPIProviderUtils.js:2212:9 < this.XPIProvider.checkForChanges@XPIProvider.jsm:3826:34 < this.XPIProvider.startup@XPIProvider.jsm:2830:25 < callProvider@AddonManager.jsm:237:12 < _startProvider@AddonManager.jsm:790:5 < AddonManagerInternal.startup@AddonManager.jsm:976:9 < this.AddonManagerPrivate.startup@AddonManager.jsm:3033:5 < amManager.prototype.observe@addonManager.js:65:9
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
+1582520876778	Marionette	INFO	Listening on port 49727
+JavaScript warning: chrome://imacros/content/MacroPlayer.js, line 1312: unreachable code after return statement
+1582520877230	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: PushService: 
+  stateChangeProcessEnqueue: Error transitioning state
+  UnknownError
+1582520886542	Marionette	INFO	New connections will no longer be accepted
+1582520889518	geckodriver	INFO	Listening on 127.0.0.1:49789
+1582520894450	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe with args ["-marionette"]
+1582520894840	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing background.persistent: Event pages are not currently supported. This will run as a persistent background page.
+1582520894844	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing options_page: An unexpected property was found in the WebExtension manifest.
+1582520894844	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing sandbox: An unexpected property was found in the WebExtension manifest.
+1582520894908	addons.xpi	ERROR	Failed to process extension changes at startup: TypeError: aAddon._installLocation is undefined (resource://gre/modules/addons/XPIProvider.jsm:728:1) JS Stack trace: canRunInSafeMode@XPIProvider.jsm:728:1 < this.XPIProvider.callBootstrapMethod@XPIProvider.jsm:4885:76 < processFileChanges@XPIProviderUtils.js:2212:9 < this.XPIProvider.checkForChanges@XPIProvider.jsm:3826:34 < this.XPIProvider.startup@XPIProvider.jsm:2830:25 < callProvider@AddonManager.jsm:237:12 < _startProvider@AddonManager.jsm:790:5 < AddonManagerInternal.startup@AddonManager.jsm:976:9 < this.AddonManagerPrivate.startup@AddonManager.jsm:3033:5 < amManager.prototype.observe@addonManager.js:65:9
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
+1582520895180	Marionette	INFO	Listening on port 49800
+JavaScript warning: chrome://imacros/content/MacroPlayer.js, line 1312: unreachable code after return statement
+1582520895628	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: PushService: 
+  stateChangeProcessEnqueue: Error transitioning state
+  UnknownError
+1582520899426	Marionette	INFO	New connections will no longer be accepted
+1582520900535	geckodriver	INFO	Listening on 127.0.0.1:49854
+1582520905666	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe with args ["-marionette"]
+1582520906066	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing background.persistent: Event pages are not currently supported. This will run as a persistent background page.
+1582520906070	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing options_page: An unexpected property was found in the WebExtension manifest.
+1582520906070	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing sandbox: An unexpected property was found in the WebExtension manifest.
+1582520906140	addons.xpi	ERROR	Failed to process extension changes at startup: TypeError: aAddon._installLocation is undefined (resource://gre/modules/addons/XPIProvider.jsm:728:1) JS Stack trace: canRunInSafeMode@XPIProvider.jsm:728:1 < this.XPIProvider.callBootstrapMethod@XPIProvider.jsm:4885:76 < processFileChanges@XPIProviderUtils.js:2212:9 < this.XPIProvider.checkForChanges@XPIProvider.jsm:3826:34 < this.XPIProvider.startup@XPIProvider.jsm:2830:25 < callProvider@AddonManager.jsm:237:12 < _startProvider@AddonManager.jsm:790:5 < AddonManagerInternal.startup@AddonManager.jsm:976:9 < this.AddonManagerPrivate.startup@AddonManager.jsm:3033:5 < amManager.prototype.observe@addonManager.js:65:9
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
+1582520906416	Marionette	INFO	Listening on port 49862
+JavaScript warning: chrome://imacros/content/MacroPlayer.js, line 1312: unreachable code after return statement
+1582520906868	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: PushService: 
+  stateChangeProcessEnqueue: Error transitioning state
+  UnknownError
+1582520909894	Marionette	INFO	New connections will no longer be accepted
+1582520911279	geckodriver	INFO	Listening on 127.0.0.1:49909
+1582520916240	geckodriver::marionette	INFO	Starting browser C:\Program Files\Mozilla Firefox\firefox.exe with args ["-marionette"]
+1582520916678	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing background.persistent: Event pages are not currently supported. This will run as a persistent background page.
+1582520916682	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing options_page: An unexpected property was found in the WebExtension manifest.
+1582520916682	addons.webextension.<unknown>	WARN	Loading extension 'null': Reading manifest: Error processing sandbox: An unexpected property was found in the WebExtension manifest.
+1582520916748	addons.xpi	ERROR	Failed to process extension changes at startup: TypeError: aAddon._installLocation is undefined (resource://gre/modules/addons/XPIProvider.jsm:728:1) JS Stack trace: canRunInSafeMode@XPIProvider.jsm:728:1 < this.XPIProvider.callBootstrapMethod@XPIProvider.jsm:4885:76 < processFileChanges@XPIProviderUtils.js:2212:9 < this.XPIProvider.checkForChanges@XPIProvider.jsm:3826:34 < this.XPIProvider.startup@XPIProvider.jsm:2830:25 < callProvider@AddonManager.jsm:237:12 < _startProvider@AddonManager.jsm:790:5 < AddonManagerInternal.startup@AddonManager.jsm:976:9 < this.AddonManagerPrivate.startup@AddonManager.jsm:3033:5 < amManager.prototype.observe@addonManager.js:65:9
+[GFX1]: Potential driver version mismatch ignored due to missing DLLs 0.0.0.0 and 0.0.0.0
+1582520917030	Marionette	INFO	Listening on port 49917
+JavaScript warning: chrome://imacros/content/MacroPlayer.js, line 1312: unreachable code after return statement
+1582520917290	Marionette	WARN	TLS certificate errors will be ignored for this session
+console.error: PushService: 
+  stateChangeProcessEnqueue: Error transitioning state
+  UnknownError
+1582520934100	Marionette	INFO	New connections will no longer be accepted

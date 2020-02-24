@@ -52,7 +52,7 @@ def download_order(isNew: bool,
 
     # ファイルをダウンロードする場合、
     # firefox が立ちあがる前に削除しないといけない
-    if not driverConfig.delete_file_handler(fp.tempfolder):
+    if not driverConfig.delete_handler_files(fp.tempfolder):
         raise Exception("FireFox Profile Temp Folder Error")
 
     with webdriver.Firefox(
@@ -251,7 +251,7 @@ def shipping_instruction(orders: List[Order],
 
     # ファイルをダウンロードする場合、
     # firefox が立ちあがる前に削除しないといけない
-    if not driverConfig.delete_file_handler(fp.tempfolder):
+    if not driverConfig.delete_handler_files(fp.tempfolder):
         raise Exception("FireFox Profile Temp Folder Error")
 
     with webdriver.Firefox(

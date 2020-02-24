@@ -88,7 +88,7 @@ class DriverConfig:
                  firefox: str = "C:\\Program Files\\Mozilla Firefox\\firefox.exe",
                  geckodriver: str = "geckodriver.exe",
                  log: str = "log",
-                 download: str = "download"):
+                 download: str = ""):
         if profile is None:
             self.profile = self.__get_profile_dir()
 
@@ -100,15 +100,11 @@ class DriverConfig:
 
         self.preference: Dict[str, Any] = {}
 
-        self.download: Optional[str]
         if download == "":
-            self.download = ""
+            self.download = download
             return
 
         self.download = self.__setup_download_dir(download)
-        # download は selenium ライブラリ側でエラーが出せないため
-        if self.download is None:
-            raise Exception("Download Dir Not Exist")
 
         self.preference = {"browser.download.useDownloadDir": True,
                            "browser.helperApps.neverAsk.saveToDisk": ",".join(self.__MIME_TYPES),
@@ -116,7 +112,7 @@ class DriverConfig:
                            "browser.download.lastDir": "",
                            "browser.download.dir": self.download}
 
-    def delete_file_handler(self, tempfolder: str) -> bool:
+    def delete_handler_files(self, tempfolder: str) -> bool:
         tempfolder_p = Path(tempfolder)
         if not tempfolder_p.is_dir():
             return False
@@ -138,24 +134,29 @@ class DriverConfig:
     @staticmethod
     def __get_profile_dir() -> Optional[str]:
         user = getuser()
-        profiles_dir = f"C:\\Users\\{user}\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\"
-        p = Path(profiles_dir)
+        PROFILE_DIR = f"C:\\Users\\{user}\\AppData\\Roaming\\Mozilla\\Firefox\\Profiles\\"
+        p = Path(PROFILE_DIR)
         if p.is_dir():
-            for profile in p.iterdir():
-                if profile.is_dir():
-                    if "default" in profile.name.lower():
-                        return str(profile)
+            for content in p.iterdir():
+                if content.is_dir():
+                    if "default" in content.name.lower():
+                        return str(content)
         return None
 
     @staticmethod
-    def __setup_download_dir(dir: str) -> Optional[str]:
-        return _init_dir(dir, True)
+    def __setup_download_dir(dir: str) -> str:
+        download_dir = _init_dir(dir, True)
+        # download は selenium ライブラリ側でエラーが出せないため
+        if download_dir is None:
+            raise Exception("Download Dir Not Exist")
+
+        return str(Path(download_dir).resolve())
 
     @staticmethod
-    def __setup_log_file_path(dir: str) -> Optional[str]:
+    def __setup_log_file_path(dir: str) -> str:
         log_dir = _init_dir(dir, False)
         if log_dir is None:
-            return None
+            return ""
 
         return str(Path(log_dir).joinpath("geckodriver.log").resolve())
 

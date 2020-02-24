@@ -24,7 +24,7 @@ def _init_dir(dir: str, unlink: bool) -> Optional[str]:
     # 指定されたディレクトリが存在しなかったら作成
     if not path.exists():
         path.mkdir(parents=True)
-        return str(path.resolve())
+        return str(path)
 
     # 既存のディレクトリで、unlink = True だったら中身を全削除
     if unlink:
