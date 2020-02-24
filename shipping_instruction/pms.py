@@ -76,9 +76,12 @@ class PMSFile:
         # ファイル名の確認に使用
         self.fileName = file_p.name
         C = self.config = config
-        with open(str(file_p), newline="", encoding="utf_8") as csvfile:
+        # pms から出力されるファイルのエンコードは shift_jis のよう
+        with open(str(file_p), newline="", encoding="shift_jis") as csvfile:
             reader = csv.reader(csvfile)
-            self.csv_rows = [row for row in reader]
+            self.__csvRows = [row for row in reader]
+
+            self.instructionNumber = self.__csvRows[1][C.INSTRUCTION_NUMBER]
 
             shipment_date = self.__get_valid_shipment_date()
             if shipment_date is None:
@@ -92,7 +95,7 @@ class PMSFile:
             self.headCharOfShipmentWarehouse = shipment_warehouse[0]
 
             katas: Set[str] = set()
-            for index, row in enumerate(self.csv_rows):
+            for index, row in enumerate(self.__csvRows):
                 if index == 0:
                     continue
 
@@ -103,7 +106,7 @@ class PMSFile:
             self.pmsRowsOfKatas: List[PMSRowsOfKata] = []
             for kata in self.katas:
                 pms_rows: List[PMSRow] = []
-                for index, row in enumerate(self.csv_rows):
+                for index, row in enumerate(self.__csvRows):
                     if index == 0:
                         continue
 
@@ -142,7 +145,7 @@ class PMSFile:
         DEFAULT_SHIPMENT_DATE = datetime.strptime("1900/01/01", FORMAT).date()
         shipment_date = DEFAULT_SHIPMENT_DATE
 
-        for index, row in enumerate(self.csv_rows):
+        for index, row in enumerate(self.__csvRows):
             if index == 0:
                 continue
 
@@ -166,7 +169,7 @@ class PMSFile:
         DEFAULT_SHIPMENT_WAREHOUSE = ""
         shipment_warehouse = DEFAULT_SHIPMENT_WAREHOUSE
 
-        for index, row in enumerate(self.csv_rows):
+        for index, row in enumerate(self.__csvRows):
             if index == 0:
                 continue
 

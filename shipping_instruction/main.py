@@ -9,6 +9,7 @@ from shipping_instruction.config import (AnsweredOrderFileColumnConfig,
 from shipping_instruction.order import Order, OrderFile, OrderFiles
 from shipping_instruction.pms import PMSFile, PMSFileColumnsConfig
 from shipping_instruction.user import User
+from shipping_instruction.pdf import merge
 
 
 def read_pms_file() -> PMSFile:
@@ -125,10 +126,16 @@ def shipping_instruction_wrapper(orders: List[Order],
                                  mrpCConfig: MRPCConfig,
                                  user: User):
     shipping_instruction(orders=orders,
-                         #  driverConfig=DriverConfig(download="download\\pdf"),
-                         driverConfig=DriverConfig(download=""),
+                         driverConfig=DriverConfig(download=DirConfig.PDF_DIR),
                          mrpCConfig=mrpCConfig,
                          user=user)
+
+
+def merge_wrapper(pmsFile: PMSFile):
+    if merge(DirConfig.PDF_DIR,
+             DirConfig.PDF_OUTPUT_DIR,
+             pmsFile.instructionNumber) is None:
+        raise Exception("PDF Merge Fail")
 
 
 def main():
@@ -179,6 +186,10 @@ def main():
         mrp_c_config,
         user
     )
+
+    print("出荷指示書の PDF を結合します")
+
+    merge_wrapper(pms_file.instructionNumber)
 
     BYE = 5
     print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")

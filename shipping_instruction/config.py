@@ -304,6 +304,7 @@ class AnsweredOrderFileColumnConfig(OrderFileColumnConfingBase):
 class PMSFileColumnsConfig:
     SHIPMENT_DATE_FORMAT_VAL = "%Y/%m/%d"
 
+    INSTRUCTION_NUMBER = 0
     SHIPMENT_WAREHOUSE = 1
     SHIPMENT_DATE = 3
     KATA = 8
@@ -322,7 +323,8 @@ class DirConfig:
     ANSWERED_ORDER_OUTPUT_PATH = "output\\answered.xls"
     NEW_ORDER_OUTPUT_PATH = "output\\new.xls"
 
-    PDF_DIR = "pdf"
+    PDF_DIR = "download\\pdf"
+    PDF_OUTPUT_DIR = "output\\pdf"
 
 
 class MRPCConfig:

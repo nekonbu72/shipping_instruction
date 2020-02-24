@@ -377,7 +377,7 @@ def shipping_instruction(orders: List[Order],
 
                 wait.until(
                     EC.presence_of_element_located(
-                        # 「以」の前の改行に注意
+                        # 「デ」の前の改行に注意
                         (By.XPATH, "//*[text()=\"\nデータを登録しました。\"]")
                     )
                 )

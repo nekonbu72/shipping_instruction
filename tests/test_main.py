@@ -1,12 +1,10 @@
 import unittest
 
 from shipping_instruction.config import DirConfig, MRPCConfig
-from shipping_instruction.main import (download_answered_order,
-                                       download_new_order, main,
-                                       output_upload_file_wrapper,
-                                       read_pms_file,
-                                       shipping_instruction_wrapper,
-                                       upload_spl_wrapper)
+from shipping_instruction.main import (
+    download_answered_order, download_new_order, main, merge_wrapper,
+    output_upload_file_wrapper, read_pms_file, shipping_instruction_wrapper,
+    upload_spl_wrapper)
 from shipping_instruction.order import OrderFiles
 from shipping_instruction.pms import PMSFile
 from shipping_instruction.user import User
@@ -58,6 +56,10 @@ class TestMain(unittest.TestCase):
             mrp_c_config,
             User(DirConfig.USER_JSON_PATH)
         )
+
+    def test_merge_wrapper(self):
+        pms_file = read_pms_file()
+        merge_wrapper(pms_file)
 
     def test_main(self):
         main()
