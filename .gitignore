@@ -1,0 +1,12 @@
+.mypy_cache
+.venv
+build
+dist
+__pycache__
+
+download
+input
+output
+geckodriver.exe
+test.csv
+user.json

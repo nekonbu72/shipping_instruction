@@ -1,0 +1,11 @@
+{
+  "[python]": {
+    "editor.tabSize": 4
+  },
+  "python.pythonPath": ".venv\\Scripts\\python.exe",
+  "python.venvPath": ".venv",
+  "python.linting.mypyEnabled": true,
+  "python.testing.unittestEnabled": true,
+  "python.testing.unittestArgs": ["-v", "-f", "-s", "./tests"],
+  "python.terminal.activateEnvironment": false
+}
