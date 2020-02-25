@@ -7,9 +7,9 @@ from shipping_instruction.config import (AnsweredOrderFileColumnConfig,
                                          DirConfig, DriverConfig, MRPCConfig,
                                          NewOrderFileColumnConfig)
 from shipping_instruction.order import Order, OrderFile, OrderFiles
+from shipping_instruction.pdf import merge
 from shipping_instruction.pms import PMSFile, PMSFileColumnsConfig
 from shipping_instruction.user import User
-from shipping_instruction.pdf import merge
 
 
 def read_pms_file() -> PMSFile:
@@ -144,12 +144,6 @@ def main():
 
     pms_file = read_pms_file()
 
-    # print(f"このファイルを元に処理を開始してよろしいですか？: {pms_file.fileName}")
-    # YES = "y"
-    # res = input(f"よろしければ {YES} を入力してEnterキーを押してください: ")
-    # if not res == YES:
-    #     raise Exception("Process Stopped By User")
-
     print(f"このファイルを元に処理を開始します: {pms_file.fileName}")
 
     mrp_c_config = MRPCConfig(pms_file)
@@ -189,7 +183,7 @@ def main():
 
     print("出荷指示書の PDF を結合します")
 
-    merge_wrapper(pms_file.instructionNumber)
+    merge_wrapper(pms_file)
 
     BYE = 5
     print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")

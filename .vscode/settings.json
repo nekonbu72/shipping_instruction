@@ -1,5 +1,5 @@
 {
-  "python.pythonPath": "c:\\Users\\Tomoyuki Nakamura\\developer\\python\\shipping_instruction\\.venv\\Scripts\\python.exe",
+  "python.pythonPath": ".venv\\Scripts\\python.exe",
   "python.venvPath": ".venv",
   "python.linting.mypyEnabled": true,
   "python.testing.unittestEnabled": true,

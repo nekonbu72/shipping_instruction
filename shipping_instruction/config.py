@@ -145,6 +145,7 @@ class DriverConfig:
 
     @staticmethod
     def __setup_download_dir(dir: str) -> str:
+        # この実装だとダウンロード先のフォルダは毎回リフレッシュされるので注意
         download_dir = _init_dir(dir, True)
         # download は selenium ライブラリ側でエラーが出せないため
         if download_dir is None:
