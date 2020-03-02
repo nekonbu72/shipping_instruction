@@ -79,7 +79,7 @@ class Order:
         return original_rows
 
     @property
-    def notTBDSPLRows(self) -> List["SPLRow"]:  # 不明のエラー
+    def notTBDSPLRows(self) -> List[SPLRow]:
         not_tbd_spl_rows = []
         for spl_row in self.splRows:
             if not spl_row.isTBD:
@@ -376,7 +376,7 @@ class OrderFile:
 
 @dataclass
 class SPLRow(PMSRow):
-    __DEFAULT_COPIED_SHIPMENT_QTY: int = field(default=0, init=False)
+    __DEFAULT_COPIED_SHIPMENT_QTY: ClassVar[int] = 0
 
     # kata: str
     # hin: str
@@ -500,7 +500,7 @@ class OrderFiles:
 
             spl_rows: List[SPLRow] = []
             for hin, shipment_qty in pms_rows_of_a_kata.shipmentQtyOfHin.items():
-                spl_row = SPLRow(kata=kata,
+                spl_row = SPLRow(kata=kata,  # type: ignore
                                  hin=hin,
                                  shipmentDate=pms_rows_of_a_kata.shipmentDate,
                                  shipmentQty=shipment_qty,
@@ -510,7 +510,7 @@ class OrderFiles:
 
             if tbd_qty > 0:
                 tbd_hin = spl_rows[0].hin
-                tbd_spl_row = SPLRow(kata=kata,
+                tbd_spl_row = SPLRow(kata=kata,  # type: ignore
                                      hin=tbd_hin,
                                      shipmentDate=self.__TBD_DATE,
                                      shipmentQty=tbd_qty,
@@ -550,7 +550,7 @@ class OrderFiles:
                     # まだ回答を更新していない注残 >= 未引当出荷数
                     # 回答が1注番に全部入る
                     shipment_qty = spl_row.notCopiedShipmentQty
-                    spl_row_to_order = SPLRow(kata=spl_row.kata,
+                    spl_row_to_order = SPLRow(kata=spl_row.kata,  # type: ignore
                                               hin=spl_row.hin,
                                               shipmentDate=spl_row.shipmentDate,
                                               shipmentQty=shipment_qty,
@@ -563,7 +563,7 @@ class OrderFiles:
                     # まだ回答を更新していない注残 < 未引当出荷数
                     # 回答が注番をまたぐ
                     shipment_qty = order.notUpdatedShipmentQty
-                    spl_row_to_order = SPLRow(kata=spl_row.kata,
+                    spl_row_to_order = SPLRow(kata=spl_row.kata,  # type: ignore
                                               hin=spl_row.hin,
                                               shipmentDate=spl_row.shipmentDate,
                                               shipmentQty=shipment_qty,
