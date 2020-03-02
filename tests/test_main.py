@@ -35,9 +35,9 @@ class TestMain(unittest.TestCase):
         new_order_path = _get_first_file_in_dir(DirConfig.NEW_ORDER_DIR)
 
         (_, _, order_files) = output_upload_file_wrapper(
+            pms_file,
             answered_order_path,
-            new_order_path,
-            pms_file
+            new_order_path
         )
         return order_files
 

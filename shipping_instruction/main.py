@@ -43,9 +43,9 @@ def download_new_order(mrpCConfig: MRPCConfig, user: User) -> Optional[str]:
     return new_file_path
 
 
-def output_upload_file_wrapper(answered_file_path: str,
-                               new_file_path: Optional[str],
-                               pms_file: PMSFile) -> Tuple[bool, bool, OrderFiles]:
+def output_upload_file_wrapper(pms_file: PMSFile,
+                               answered_file_path: str,
+                               new_file_path: Optional[str]) -> Tuple[bool, bool, OrderFiles]:
     answered_order_file = OrderFile(isNew=False,
                                     path=answered_file_path,
                                     config=AnsweredOrderFileColumnConfig())
@@ -161,9 +161,9 @@ def main():
     print("納期回答アップロードファイルを作成します")
 
     (do_answered, do_new, order_files) = output_upload_file_wrapper(
+        pms_file,
         answered_file_path,
-        new_file_path,
-        pms_file
+        new_file_path
     )
 
     print("納期回答をアップロードします")

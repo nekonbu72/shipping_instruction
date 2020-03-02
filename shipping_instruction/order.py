@@ -1,6 +1,7 @@
+from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import ClassVar, Dict, List, Optional, Set
 
 from xlrd import open_workbook, sheet, xldate
 from xlwt import Workbook, Worksheet
@@ -10,27 +11,39 @@ from shipping_instruction.pms import PMSFile, PMSRow
 from shipping_instruction.util import _init_dir
 
 
+@dataclass
 class Order:
-    __DEFAULT_UPDATED_RELEASED_QTY = 0
+    __DEFAULT_UPDATED_RELEASED_QTY: ClassVar[int] = 0
 
-    def __init__(self,
-                 orderID: str,
-                 orderNumber: str,
-                 kata: str,
-                 orderQty: int,
-                 isNew: bool,
-                 releasedQty: int):
-        self.orderID = orderID
-        self.orderNumber = orderNumber
-        self.kata = kata
-        self.orderQty = orderQty
-        self.isNew = isNew
-        self.releasedQty = releasedQty
+    orderID: str
+    orderNumber: str
+    kata: str
+    orderQty: int
+    isNew: bool
+    releasedQty: int
+    splRows: List["SPLRow"] = field(default_factory=list)
+    releasedRows: List[int] = field(default_factory=list)
+    notReleasedRows: List[int] = field(default_factory=list)
 
+    # def __init__(self,
+    #              orderID: str,
+    #              orderNumber: str,
+    #              kata: str,
+    #              orderQty: int,
+    #              isNew: bool,
+    #              releasedQty: int):
+    #     self.orderID = orderID
+    #     self.orderNumber = orderNumber
+    #     self.kata = kata
+    #     self.orderQty = orderQty
+    #     self.isNew = isNew
+    #     self.releasedQty = releasedQty
+
+    def __post_init__(self):
         self.__updatedReleasedQty = self.__DEFAULT_UPDATED_RELEASED_QTY
-        self.splRows: List[SPLRow] = []
-        self.releasedRows: List[int] = []
-        self.notReleasedRows: List[int] = []
+        # self.splRows: List[SPLRow] = []
+        # self.releasedRows: List[int] = []
+        # self.notReleasedRows: List[int] = []
 
     @property
     def updatedReleasedQty(self) -> int:
@@ -361,25 +374,36 @@ class OrderFile:
         return newValue
 
 
+@dataclass
 class SPLRow(PMSRow):
-    __DEFAULT_COPIED_SHIPMENT_QTY = 0
+    __DEFAULT_COPIED_SHIPMENT_QTY: int = field(default=0, init=False)
 
-    def __init__(self,
-                 kata: str,
-                 hin: str,
-                 shipmentDate: Optional[date],
-                 shipmentQty: int,
-                 shipmentWarehouse: str,
-                 isTBD: bool):
+    # kata: str
+    # hin: str
+    # shipmentDate: Optional[date]
+    # shipmentQty: int
+    # shipmentWarehouse: str
+    isTBD: bool
 
-        super().__init__(kata=kata,
-                         hin=hin,
-                         shipmentDate=shipmentDate,
-                         shipmentQty=shipmentQty,
-                         shipmentWarehouse=shipmentWarehouse)
+    # def __init__(self,
+    #              kata: str,
+    #              hin: str,
+    #              shipmentDate: Optional[date],
+    #              shipmentQty: int,
+    #              shipmentWarehouse: str,
+    #              isTBD: bool):
 
+    #     super().__init__(kata=kata,
+    #                      hin=hin,
+    #                      shipmentDate=shipmentDate,
+    #                      shipmentQty=shipmentQty,
+    #                      shipmentWarehouse=shipmentWarehouse)
+
+    #     self.__copiedShipmentQty = self.__DEFAULT_COPIED_SHIPMENT_QTY
+    #     self.isTBD = isTBD
+
+    def __post_init__(self):
         self.__copiedShipmentQty = self.__DEFAULT_COPIED_SHIPMENT_QTY
-        self.isTBD = isTBD
 
     @property
     def copiedShipmentQty(self) -> int:

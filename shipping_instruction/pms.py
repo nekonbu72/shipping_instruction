@@ -1,4 +1,5 @@
 import csv
+from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set
@@ -7,30 +8,31 @@ from shipping_instruction.config import PMSFileColumnsConfig
 from shipping_instruction.util import _get_first_file_in_dir
 
 
+@dataclass
 class PMSRow:
-    def __init__(self,
-                 kata: str,
-                 hin: str,
-                 shipmentDate: Optional[date],
-                 shipmentQty: int,
-                 shipmentWarehouse: str):
-        self.kata = kata
-        self.hin = hin
-        self.shipmentQty = shipmentQty
-        self.shipmentDate = shipmentDate
-        self.shipmentWarehouse = shipmentWarehouse
+    kata: str
+    hin: str
+    shipmentDate: Optional[date]
+    shipmentQty: int
+    shipmentWarehouse: str
 
 
+@dataclass
 class PMSRowsOfKata:
-    def __init__(self,
-                 kata: str,
-                 shipmentDate: date,
-                 shipmentWarehouse: str,
-                 pmsRows: List[PMSRow]):
-        self.kata = kata
-        self.shipmentDate = shipmentDate
-        self.shipmentWarehouse = shipmentWarehouse
-        self.pmsRows = pmsRows
+    kata: str
+    shipmentDate: date
+    shipmentWarehouse: str
+    pmsRows: List[PMSRow]
+
+    # def __init__(self,
+    #              kata: str,
+    #              shipmentDate: date,
+    #              shipmentWarehouse: str,
+    #              pmsRows: List[PMSRow]):
+    #     self.kata = kata
+    #     self.shipmentDate = shipmentDate
+    #     self.shipmentWarehouse = shipmentWarehouse
+    #     self.pmsRows = pmsRows
 
     @property
     def hins(self) -> List[str]:
