@@ -1,5 +1,6 @@
 from pathlib import Path
-from typing import Optional, List
+from typing import List, Optional
+
 from PyPDF2 import PdfFileMerger
 
 from shipping_instruction.util import _init_dir

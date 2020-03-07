@@ -79,7 +79,7 @@ class Order:
         return original_rows
 
     @property
-    def notTBDSPLRows(self) -> List[SPLRow]:
+    def notTBDSPLRows(self) -> List["SPLRow"]:
         not_tbd_spl_rows = []
         for spl_row in self.splRows:
             if not spl_row.isTBD:
