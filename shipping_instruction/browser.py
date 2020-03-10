@@ -42,6 +42,20 @@ class __DownloadCompleted():
         return driver if counter >= 1 else None
 
 
+def __save_error_screenshot(driver: WebDriver, dir: str):
+    file_dir = _init_dir(dir, False)
+    if file_dir is None:
+        raise Exception("Error Screenshot Dir Not Found")
+
+    dir_p = Path(file_dir)
+    file_name = f'{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
+    file_p = dir_p.joinpath(file_name)
+    if not file_p.is_file():
+        raise Exception("Screenshot Save Fail")
+
+    driver.save_screenshot(str(file_p))
+
+
 def download_order(isNew: bool,
                    driverConfig: DriverConfig,
                    mrpCConfig: MRPCConfig,
@@ -238,15 +252,7 @@ def upload_spl(isNew: bool,
             return True
         except TimeoutException:
             # アップデートで弾かれた
-            fileDir = _init_dir(DirConfig.ERROR_SCREENSHOT_DIR, False)
-            if fileDir is None:
-                raise Exception("Error Screenshot Dir Not Found")
-
-            p = Path(fileDir)
-            filename = f'{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
-            p.joinpath(filename)
-
-            driver.save_screenshot(str(p))
+            __save_error_screenshot(driver, DirConfig.ERROR_SCREENSHOT_DIR)
             return False
 
 
@@ -362,6 +368,8 @@ def shipping_instruction(orders: List[Order],
                             (By.NAME, "load_cd_rfc_2_0"))
                     ).send_keys(mrpCConfig.TSUMI_BASYO)
                 except TimeoutException:
+                    __save_error_screenshot(
+                        driver, DirConfig.ERROR_SCREENSHOT_DIR)
                     raise Exception("SPL Not Found")
 
                 wait.until(
