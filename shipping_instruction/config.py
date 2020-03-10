@@ -327,6 +327,8 @@ class DirConfig:
     PDF_DIR = "download\\pdf"
     PDF_OUTPUT_DIR = "output\\pdf"
 
+    ERROR_SCREENSHOT_DIR = "error"
+
 
 class MRPCConfig:
     def __init__(self, pms_file):

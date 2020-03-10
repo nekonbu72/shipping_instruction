@@ -43,33 +43,33 @@ def download_new_order(mrpCConfig: MRPCConfig, user: User) -> Optional[str]:
     return new_file_path
 
 
-def output_upload_file_wrapper(pms_file: PMSFile,
-                               answered_file_path: str,
-                               new_file_path: Optional[str]) -> Tuple[bool, bool, OrderFiles]:
+def output_upload_file_wrapper(pmsFile: PMSFile,
+                               answeredFilePath: str,
+                               newFilePath: Optional[str]) -> Tuple[bool, bool, OrderFiles]:
     answered_order_file = OrderFile(isNew=False,
-                                    path=answered_file_path,
+                                    path=answeredFilePath,
                                     config=AnsweredOrderFileColumnConfig())
 
     new_order_file: Optional[OrderFile] = None
-    if new_file_path is None:
+    if newFilePath is None:
         print("New Order File Not Found")
     else:
         new_order_file = OrderFile(isNew=True,
-                                   path=new_file_path,
+                                   path=newFilePath,
                                    config=NewOrderFileColumnConfig())
 
-    order_files = OrderFiles([answered_order_file])
+    order_files = OrderFiles(files=[answered_order_file])
 
     if not new_order_file is None:
-        order_files.append_order_file(new_order_file)
+        order_files.append_order_file(orderFile=new_order_file)
 
-    order_files.apply_shipping_plan(pms_file)
+    order_files.apply_shipping_plan(pmsFile=pmsFile)
 
     answered_done = new_done = False
     for order_file in order_files.files:
         if not order_file.isNew:
             answered_done = order_file.output_upload_file(
-                DirConfig.ANSWERED_ORDER_OUTPUT_PATH
+                output=DirConfig.ANSWERED_ORDER_OUTPUT_PATH
             )
             if not answered_done:
                 print("Answered Order No Update")
@@ -79,7 +79,7 @@ def output_upload_file_wrapper(pms_file: PMSFile,
                 )
         else:
             new_done = order_file.output_upload_file(
-                DirConfig.NEW_ORDER_OUTPUT_PATH
+                output=DirConfig.NEW_ORDER_OUTPUT_PATH
             )
             if not new_done:
                 print("New Order No Update")
@@ -132,9 +132,9 @@ def shipping_instruction_wrapper(orders: List[Order],
 
 
 def merge_wrapper(pmsFile: PMSFile):
-    if merge(DirConfig.PDF_DIR,
-             DirConfig.PDF_OUTPUT_DIR,
-             pmsFile.instructionNumber) is None:
+    if merge(inputDir=DirConfig.PDF_DIR,
+             outputBaseDir=DirConfig.PDF_OUTPUT_DIR,
+             instructionNumber=pmsFile.instructionNumber) is None:
         raise Exception("PDF Merge Fail")
 
 
@@ -147,43 +147,43 @@ def main():
     print(f"このファイルを元に処理を開始します: {pms_file.fileName}")
 
     mrp_c_config = MRPCConfig(pms_file)
-    user = User(DirConfig.USER_JSON_PATH)
+    user = User(jsonPath=DirConfig.USER_JSON_PATH)
 
     print("注残のファイルをダウンロードします")
 
     (answered_file_path, new_file_path) = (
-        download_answered_order(mrp_c_config,
-                                user),
-        download_new_order(mrp_c_config,
-                           user)
+        download_answered_order(mrpCConfig=mrp_c_config,
+                                user=user),
+        download_new_order(mrpCConfig=mrp_c_config,
+                           user=user)
     )
 
     print("納期回答アップロードファイルを作成します")
 
     (do_answered, do_new, order_files) = output_upload_file_wrapper(
-        pms_file,
-        answered_file_path,
-        new_file_path
+        pmsFile=pms_file,
+        answeredFilePath=answered_file_path,
+        newFilePath=new_file_path
     )
 
     print("納期回答をアップロードします")
 
     upload_spl_wrapper(
-        do_answered,
-        do_new,
-        user)
+        doAnswered=do_answered,
+        doNew=do_new,
+        user=user)
 
     print("出荷指示を登録します")
 
     shipping_instruction_wrapper(
-        order_files.ordersHasNotTBDSPLRow,
-        mrp_c_config,
-        user
+        orders=order_files.ordersHasNotTBDSPLRow,
+        mrpCConfig=mrp_c_config,
+        user=user
     )
 
     print("出荷指示書の PDF を結合します")
 
-    merge_wrapper(pms_file)
+    merge_wrapper(pmsFile=pms_file)
 
     BYE = 5
     print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")

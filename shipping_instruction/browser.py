@@ -1,3 +1,4 @@
+from datetime import datetime
 from pathlib import Path
 from time import sleep
 from typing import List, Optional
@@ -15,30 +16,30 @@ from shipping_instruction.config import DirConfig, DriverConfig, MRPCConfig
 from shipping_instruction.order import Order, OrderFiles
 from shipping_instruction.pms import PMSFile
 from shipping_instruction.user import User
-from shipping_instruction.util import _get_first_file_in_dir
+from shipping_instruction.util import _get_first_file_in_dir, _init_dir
 
 __SPEC = "32268"
 
 
-class DownloadCompleted():
+class __DownloadCompleted():
     __DOWNLOAD_WAIT = 5
 
     def __init__(self, dir: str):
         sleep(self.__DOWNLOAD_WAIT)
         self.dir = dir
 
-    def __call__(self, driver: WebDriver):
+    def __call__(self, driver: WebDriver) -> Optional[WebDriver]:
         p = Path(self.dir)
         if not p.is_dir():
-            return False
+            return None
 
         counter = 0
         for content in p.iterdir():
             counter += 1
             if content.suffix == ".part":
-                return False
+                return None
 
-        return driver if counter >= 1 else False
+        return driver if counter >= 1 else None
 
 
 def download_order(isNew: bool,
@@ -144,7 +145,7 @@ def download_order(isNew: bool,
             return None
 
         WebDriverWait(driver, 30).until(
-            DownloadCompleted(download_dir)
+            __DownloadCompleted(download_dir)
         )
 
         return _get_first_file_in_dir(download_dir)
@@ -223,7 +224,6 @@ def upload_spl(isNew: bool,
             EC.presence_of_element_located((By.NAME, "pms_upfile"))
         ).send_keys(upload_file_path)
 
-        # test
         wait.until(
             EC.presence_of_element_located((By.NAME, "btn_submit"))
         ).click()
@@ -236,7 +236,17 @@ def upload_spl(isNew: bool,
                 )
             )
             return True
-        except(TimeoutException):
+        except TimeoutException:
+            # アップデートで弾かれた
+            fileDir = _init_dir(DirConfig.ERROR_SCREENSHOT_DIR, False)
+            if fileDir is None:
+                raise Exception("Error Screenshot Dir Not Found")
+
+            p = Path(fileDir)
+            filename = f'{datetime.now().strftime("%Y%m%d_%H%M%S")}.png'
+            p.joinpath(filename)
+
+            driver.save_screenshot(str(p))
             return False
 
 
@@ -351,7 +361,7 @@ def shipping_instruction(orders: List[Order],
                         EC.presence_of_element_located(
                             (By.NAME, "load_cd_rfc_2_0"))
                     ).send_keys(mrpCConfig.TSUMI_BASYO)
-                except (TimeoutException):
+                except TimeoutException:
                     raise Exception("SPL Not Found")
 
                 wait.until(

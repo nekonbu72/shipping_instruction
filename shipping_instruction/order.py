@@ -107,7 +107,7 @@ class OrderFile:
         C = self.OrderColumns = config
 
         self.isNew = isNew
-        workbook = open_workbook(path,
+        workbook = open_workbook(filename=path,
                                  formatting_info=True,
                                  on_demand=True)
         self.worksheet: sheet.Sheet = workbook.sheet_by_name(C.SHEET)
@@ -548,7 +548,7 @@ class OrderFiles:
 
                 if order.notUpdatedShipmentQty >= spl_row.notCopiedShipmentQty:
                     # まだ回答を更新していない注残 >= 未引当出荷数
-                    # 回答が1注番に全部入る
+                    # 回答がひとつの注番に全部入る
                     shipment_qty = spl_row.notCopiedShipmentQty
                     spl_row_to_order = SPLRow(kata=spl_row.kata,  # type: ignore
                                               hin=spl_row.hin,
