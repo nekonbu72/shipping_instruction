@@ -25,25 +25,8 @@ class Order:
     releasedRows: List[int] = field(default_factory=list)
     notReleasedRows: List[int] = field(default_factory=list)
 
-    # def __init__(self,
-    #              orderID: str,
-    #              orderNumber: str,
-    #              kata: str,
-    #              orderQty: int,
-    #              isNew: bool,
-    #              releasedQty: int):
-    #     self.orderID = orderID
-    #     self.orderNumber = orderNumber
-    #     self.kata = kata
-    #     self.orderQty = orderQty
-    #     self.isNew = isNew
-    #     self.releasedQty = releasedQty
-
     def __post_init__(self):
         self.__updatedReleasedQty = self.__DEFAULT_UPDATED_RELEASED_QTY
-        # self.splRows: List[SPLRow] = []
-        # self.releasedRows: List[int] = []
-        # self.notReleasedRows: List[int] = []
 
     @property
     def updatedReleasedQty(self) -> int:
@@ -378,29 +361,7 @@ class OrderFile:
 class SPLRow(PMSRow):
     __DEFAULT_COPIED_SHIPMENT_QTY: ClassVar[int] = 0
 
-    # kata: str
-    # hin: str
-    # shipmentDate: Optional[date]
-    # shipmentQty: int
-    # shipmentWarehouse: str
     isTBD: bool
-
-    # def __init__(self,
-    #              kata: str,
-    #              hin: str,
-    #              shipmentDate: Optional[date],
-    #              shipmentQty: int,
-    #              shipmentWarehouse: str,
-    #              isTBD: bool):
-
-    #     super().__init__(kata=kata,
-    #                      hin=hin,
-    #                      shipmentDate=shipmentDate,
-    #                      shipmentQty=shipmentQty,
-    #                      shipmentWarehouse=shipmentWarehouse)
-
-    #     self.__copiedShipmentQty = self.__DEFAULT_COPIED_SHIPMENT_QTY
-    #     self.isTBD = isTBD
 
     def __post_init__(self):
         self.__copiedShipmentQty = self.__DEFAULT_COPIED_SHIPMENT_QTY

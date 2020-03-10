@@ -24,16 +24,6 @@ class PMSRowsOfKata:
     shipmentWarehouse: str
     pmsRows: List[PMSRow]
 
-    # def __init__(self,
-    #              kata: str,
-    #              shipmentDate: date,
-    #              shipmentWarehouse: str,
-    #              pmsRows: List[PMSRow]):
-    #     self.kata = kata
-    #     self.shipmentDate = shipmentDate
-    #     self.shipmentWarehouse = shipmentWarehouse
-    #     self.pmsRows = pmsRows
-
     @property
     def hins(self) -> List[str]:
         hins: Set[str] = set()
