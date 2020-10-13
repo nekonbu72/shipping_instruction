@@ -1,0 +1,4 @@
+[console_scripts]
+build = shipping_instruction.__poetryscript__:clean_build
+exe = shipping_instruction.__poetryscript__:run_exe
+
