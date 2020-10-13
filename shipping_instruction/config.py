@@ -112,7 +112,10 @@ class DriverConfig:
                            "browser.download.lastDir": "",
                            "browser.download.dir": self.download}
 
-    def delete_handler_files(self, tempfolder: str) -> bool:
+    def delete_handler_files(self, tempfolder: Optional[str]) -> bool:
+        if tempfolder is None:
+            return False
+
         tempfolder_p = Path(tempfolder)
         if not tempfolder_p.is_dir():
             return False

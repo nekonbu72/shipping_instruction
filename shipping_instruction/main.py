@@ -1,8 +1,8 @@
 from time import sleep
 from typing import List, Optional, Tuple
 
-from shipping_instruction.browser import (
-    download_order, shipping_instruction, upload_spl)
+from shipping_instruction.browser import (download_order, shipping_instruction,
+                                          upload_spl)
 from shipping_instruction.config import (AnsweredOrderFileColumnConfig,
                                          DirConfig, DriverConfig, MRPCConfig,
                                          NewOrderFileColumnConfig)
@@ -45,7 +45,7 @@ def download_new_order(mrpCConfig: MRPCConfig, user: User) -> Optional[str]:
 
 def output_upload_file_wrapper(pmsFile: PMSFile,
                                answeredFilePath: str,
-                               newFilePath: Optional[str]) -> Tuple[bool, bool, OrderFiles]:
+                               newFilePath: Optional[str]) -> Tuple[bool, bool, OrderFiles, Optional[str]]:
     answered_order_file = OrderFile(isNew=False,
                                     path=answeredFilePath,
                                     config=AnsweredOrderFileColumnConfig())
@@ -64,6 +64,10 @@ def output_upload_file_wrapper(pmsFile: PMSFile,
         order_files.append_order_file(orderFile=new_order_file)
 
     order_files.apply_shipping_plan(pmsFile=pmsFile)
+
+    tyuumon_bangou_prefix = order_files.get_valid_tyuumou_bangou_prefix()
+    # if tyuumon_bangou_prefix is None:
+    #     raise Exception(" Invalid Tyuumon Bangou")
 
     answered_done = new_done = False
     for order_file in order_files.files:
@@ -88,7 +92,7 @@ def output_upload_file_wrapper(pmsFile: PMSFile,
                     f"New Order Output Path: {DirConfig.NEW_ORDER_OUTPUT_PATH}"
                 )
 
-    return (answered_done, new_done, order_files)
+    return (answered_done, new_done, order_files, tyuumon_bangou_prefix)
 
 
 def upload_spl_wrapper(doAnswered: bool, doNew: bool, user: User):
@@ -140,6 +144,8 @@ def merge_wrapper(pmsFile: PMSFile):
 
 def main():
 
+    BYE = 5
+
     print("PMS ファイルを読み込みます")
 
     pms_file = read_pms_file()
@@ -160,11 +166,19 @@ def main():
 
     print("納期回答アップロードファイルを作成します")
 
-    (do_answered, do_new, order_files) = output_upload_file_wrapper(
+    (do_answered, do_new, order_files, tyuumon_bangou_prefix) = output_upload_file_wrapper(
         pmsFile=pms_file,
         answeredFilePath=answered_file_path,
         newFilePath=new_file_path
     )
+
+    if tyuumon_bangou_prefix is None:
+        print("注文番号の接頭辞が複数混在しているため、処理を中止します")
+        print(f"このウィンドウは{BYE}秒後に自動的に閉じます")
+        sleep(BYE)
+        return
+
+    print(f"注文番号の接頭辞は {tyuumon_bangou_prefix} のみです")
 
     print("納期回答をアップロードします")
 
@@ -185,7 +199,6 @@ def main():
 
     merge_wrapper(pmsFile=pms_file)
 
-    BYE = 5
     print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")
     sleep(BYE)
 

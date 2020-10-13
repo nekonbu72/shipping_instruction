@@ -158,7 +158,7 @@ def download_order(isNew: bool,
         if download_dir is None:
             return None
 
-        WebDriverWait(driver, 30).until(
+        WebDriverWait(driver, 180).until(
             __DownloadCompleted(download_dir)
         )
 

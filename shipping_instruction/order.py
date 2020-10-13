@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import date
+from os import truncate
 from pathlib import Path
 from typing import ClassVar, Dict, List, Optional, Set
 
@@ -15,8 +16,11 @@ from shipping_instruction.util import _init_dir
 class Order:
     __DEFAULT_UPDATED_RELEASED_QTY: ClassVar[int] = 0
 
+    __TYUUMON_BANGOU_PREFIX_LEN = 2
+
     orderID: str
     orderNumber: str
+    tyuumonBangou: str
     kata: str
     orderQty: int
     isNew: bool
@@ -70,6 +74,10 @@ class Order:
 
         return not_tbd_spl_rows
 
+    @property
+    def tyuumonBangouPrefix(self) -> str:
+        return self.tyuumonBangou[:self.__TYUUMON_BANGOU_PREFIX_LEN]
+
 
 class OrderFile:
     __SUFFIX = ".xls"
@@ -113,6 +121,9 @@ class OrderFile:
                     order = Order(orderID=order_id,
                                   orderNumber=str(
                                       int(sh.cell(row, C.JUTYUU_ORDER_BANGOU).value)
+                                  ),
+                                  tyuumonBangou=str(
+                                      sh.cell(row, C.TYUUMON_BANGOU).value
                                   ),
                                   kata=str(sh.cell(row, C.KATABAN).value),
                                   orderQty=order_qty,
@@ -174,6 +185,22 @@ class OrderFile:
             if order.hasNotTBDSPLRow:
                 orders_has_not_tbd_rows.append(order)
         return orders_has_not_tbd_rows
+
+    def _get_valid_tyuumou_bangou_prefix(self) -> Optional[str]:
+        if len(self.ordersHasNotTBDSPLRow) == 0:
+            raise Exception("No Shipping Plan in this Order File")
+
+        prefixes: List[str] = []
+        for order in self.ordersHasNotTBDSPLRow:
+            prefix = order.tyuumonBangouPrefix
+            if len(prefix) < 2:
+                raise Exception("Tyuumon Bangou Prefix Length Too Short")
+
+            prefixes.append(prefix)
+        if len(set(prefixes)) == 1:
+            return prefixes[0]
+        else:
+            return None
 
     def output_upload_file(self, output: str) -> bool:
         output_p = Path(output)
@@ -410,6 +437,23 @@ class OrderFiles:
             )
 
         self.__files.append(orderFile)
+
+    def get_valid_tyuumou_bangou_prefix(self) -> Optional[str]:
+        prefixes: List[str] = []
+        for file in self.__files:
+            if len(file.ordersHasNotTBDSPLRow) == 0:
+                continue
+
+            prefix = file._get_valid_tyuumou_bangou_prefix()
+            if prefix is None:
+                return None
+
+            prefixes.append(prefix)
+
+        if len(set(prefixes)) == 1:
+            return prefixes[0]
+        else:
+            return None
 
     @property
     def files(self) -> List[OrderFile]:
