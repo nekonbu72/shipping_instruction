@@ -153,6 +153,7 @@ def main():
 
     pms_file = read_pms_file()
 
+    print("")
     print(f"このファイルをもとに処理を開始します: {pms_file.fileName}")
 
     mrp_c_config = MRPCConfig(pms_file)
