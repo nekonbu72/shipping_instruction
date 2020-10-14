@@ -23,7 +23,7 @@ def merge(inputDir: str,
         return None
 
     o = Path(output)
-    if not o.suffix == ".pdf":
+    if o.suffix != ".pdf":
         return None
 
     # 出力する前に同名のファイルがあったらエラー
@@ -61,7 +61,7 @@ def __get_original_files(dir: str) -> List[str]:
         if not content.is_file():
             continue
 
-        if not content.suffix == ".pdf":
+        if content.suffix != ".pdf":
             continue
 
         files.append(str(content))

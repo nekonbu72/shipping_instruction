@@ -91,7 +91,7 @@ class OrderFile:
         if not path_p.is_file():
             raise Exception(f"File Not Exist: {path}")
 
-        if not path_p.suffix == self.__SUFFIX:
+        if path_p.suffix != self.__SUFFIX:
             raise Exception(
                 f"Expected Suffix {self.__SUFFIX}, Get {path_p.suffix}")
 
@@ -207,7 +207,7 @@ class OrderFile:
         if output_p.is_dir():
             raise Exception(f"[{output}] is directory")
 
-        if not output_p.suffix == self.__SUFFIX:
+        if output_p.suffix != self.__SUFFIX:
             raise Exception(
                 f"Output Suffix Not [{self.__SUFFIX}]: {output_p.suffix}")
 

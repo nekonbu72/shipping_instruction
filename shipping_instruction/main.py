@@ -1,3 +1,4 @@
+import subprocess
 from time import sleep
 from typing import List, Optional, Tuple
 
@@ -24,8 +25,9 @@ def download_answered_order(mrpCConfig: MRPCConfig, user: User) -> str:
                                         mrpCConfig=mrpCConfig,
                                         user=user)
     if answered_file_path is None:
-        raise Exception("Answered Order File Download Fail")
-    print(f"Answered Order File Path: {answered_file_path}")
+        raise Exception("回答済受注ファイルのダウンロードに失敗しました")
+
+    print(f"回答済受注ファイルをダウンロードしました: {answered_file_path}")
     return answered_file_path
 
 
@@ -37,9 +39,9 @@ def download_new_order(mrpCConfig: MRPCConfig, user: User) -> Optional[str]:
                                    user=user)
     if new_file_path is None:
         # 新規受注がゼロの場合もあるためエラーにしない
-        print("New Order File Download Fail")
+        print("新規受注ファイルのダウンロードに失敗しました")
     else:
-        print(f"New Order File Path: {new_file_path}")
+        print(f"新規受注ファイルをダウンロードしました: {new_file_path}")
     return new_file_path
 
 
@@ -52,7 +54,7 @@ def output_upload_file_wrapper(pmsFile: PMSFile,
 
     new_order_file: Optional[OrderFile] = None
     if newFilePath is None:
-        print("New Order File Not Found")
+        print("新規受注ファイルが見つかりませんでした")
     else:
         new_order_file = OrderFile(isNew=True,
                                    path=newFilePath,
@@ -60,7 +62,7 @@ def output_upload_file_wrapper(pmsFile: PMSFile,
 
     order_files = OrderFiles(files=[answered_order_file])
 
-    if not new_order_file is None:
+    if new_order_file is not None:
         order_files.append_order_file(orderFile=new_order_file)
 
     order_files.apply_shipping_plan(pmsFile=pmsFile)
@@ -76,20 +78,20 @@ def output_upload_file_wrapper(pmsFile: PMSFile,
                 output=DirConfig.ANSWERED_ORDER_OUTPUT_PATH
             )
             if not answered_done:
-                print("Answered Order No Update")
+                print("回答済受注に対する納期回答更新はありません")
             else:
                 print(
-                    f"Answered Order Output Path: {DirConfig.ANSWERED_ORDER_OUTPUT_PATH}"
+                    f"回答済受注の回答アップロードファイルを作成しました: {DirConfig.ANSWERED_ORDER_OUTPUT_PATH}"
                 )
         else:
             new_done = order_file.output_upload_file(
                 output=DirConfig.NEW_ORDER_OUTPUT_PATH
             )
             if not new_done:
-                print("New Order No Update")
+                print("新規受注に対する納期回答更新はありません")
             else:
                 print(
-                    f"New Order Output Path: {DirConfig.NEW_ORDER_OUTPUT_PATH}"
+                    f"新規受注の回答アップロードファイルを作成しました: {DirConfig.NEW_ORDER_OUTPUT_PATH}"
                 )
 
     return (answered_done, new_done, order_files, tyuumon_bangou_prefix)
@@ -105,9 +107,9 @@ def upload_spl_wrapper(doAnswered: bool, doNew: bool, user: User):
                                    user=user)
     if doAnswered:
         if answered_done:
-            print("Answered Order SPL Upload Done")
+            print("回答済受注の回答アップロードが完了しました")
         else:
-            print("Answered Order SPL Upload Fail")
+            print("回答済受注の回答アップロードが失敗しました")
 
     new_done = False
     if doNew:
@@ -117,13 +119,12 @@ def upload_spl_wrapper(doAnswered: bool, doNew: bool, user: User):
                               user=user)
     if doNew:
         if new_done:
-            print("New Order SPL Upload Done")
+            print("回答済受注の回答アップロードが完了しました")
         else:
-            print("New Order SPL Upload Fail")
+            print("新規受注の回答アップロードが失敗しました")
 
-    if (not (doAnswered == answered_done)) \
-            or (not (doNew == new_done)):
-        raise Exception("Upload Fail")
+    if doAnswered != answered_done or doNew != new_done:
+        raise Exception("回答アップロードに失敗しました")
 
 
 def shipping_instruction_wrapper(orders: List[Order],
@@ -136,26 +137,29 @@ def shipping_instruction_wrapper(orders: List[Order],
 
 
 def merge_wrapper(pmsFile: PMSFile):
-    if merge(inputDir=DirConfig.PDF_DIR,
-             outputBaseDir=DirConfig.PDF_OUTPUT_DIR,
-             instructionNumber=pmsFile.instructionNumber) is None:
-        raise Exception("PDF Merge Fail")
+    pdf_path = merge(inputDir=DirConfig.PDF_DIR,
+                     outputBaseDir=DirConfig.PDF_OUTPUT_DIR,
+                     instructionNumber=pmsFile.instructionNumber)
+
+    if pdf_path is None:
+        raise Exception("PDF の結合に失敗しました")
+
+    subprocess.Popen(["start", pdf_path], shell=True)
 
 
 def main():
 
     BYE = 5
 
-    print("PMS ファイルを読み込みます")
-
     pms_file = read_pms_file()
 
-    print(f"このファイルを元に処理を開始します: {pms_file.fileName}")
+    print(f"このファイルをもとに処理を開始します: {pms_file.fileName}")
 
     mrp_c_config = MRPCConfig(pms_file)
     user = User(jsonPath=DirConfig.USER_JSON_PATH)
 
-    print("注残のファイルをダウンロードします")
+    print("")
+    print("受注ファイルをダウンロードします")
 
     (answered_file_path, new_file_path) = (
         download_answered_order(mrpCConfig=mrp_c_config,
@@ -164,6 +168,7 @@ def main():
                            user=user)
     )
 
+    print("")
     print("納期回答アップロードファイルを作成します")
 
     (do_answered, do_new, order_files, tyuumon_bangou_prefix) = output_upload_file_wrapper(
@@ -173,13 +178,17 @@ def main():
     )
 
     if tyuumon_bangou_prefix is None:
+        print("")
         print("注文番号の接頭辞が複数混在しているため、処理を中止します")
-        print(f"このウィンドウは{BYE}秒後に自動的に閉じます")
-        sleep(BYE)
+        # print(f"このウィンドウは{BYE}秒後に自動的に閉じます")
+        # sleep(BYE)
+        input("エンターキーを押すとこのウィンドウが閉じます")
         return
 
+    print("")
     print(f"注文番号の接頭辞は {tyuumon_bangou_prefix} のみです")
 
+    print("")
     print("納期回答をアップロードします")
 
     upload_spl_wrapper(
@@ -187,6 +196,7 @@ def main():
         doNew=do_new,
         user=user)
 
+    print("")
     print("出荷指示を登録します")
 
     shipping_instruction_wrapper(
@@ -195,12 +205,17 @@ def main():
         user=user
     )
 
+    print("")
     print("出荷指示書の PDF を結合します")
 
     merge_wrapper(pmsFile=pms_file)
 
-    print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")
-    sleep(BYE)
+    print("")
+    # print(f"処理が完了しました。このウィンドウは{BYE}秒後に自動的に閉じます")
+    # sleep(BYE)
+
+    print(f"処理が完了しました")
+    input("エンターキーを押すとこのウィンドウが閉じます")
 
 
 if __name__ == "__main__":

@@ -62,7 +62,7 @@ class PMSFile:
             raise Exception(f"PMS File Not Found: {path}")
 
         file_p = Path(file)
-        if not file_p.suffix == self.__SUFFIX:
+        if file_p.suffix != self.__SUFFIX:
             raise Exception(f"Invalid Suffix: {file_p.suffix}")
 
         # ファイル名の確認に使用
@@ -148,7 +148,7 @@ class PMSFile:
 
             tmp_date = \
                 datetime.strptime(row[C.SHIPMENT_DATE], FORMAT).date()
-            if not shipment_date == tmp_date:
+            if shipment_date != tmp_date:
                 return None
 
         if shipment_date == DEFAULT_SHIPMENT_DATE:
@@ -170,7 +170,7 @@ class PMSFile:
                 continue
 
             tmp_warehouse = row[C.SHIPMENT_WAREHOUSE]
-            if not shipment_warehouse == tmp_warehouse:
+            if shipment_warehouse != tmp_warehouse:
                 return None
 
         if shipment_warehouse == DEFAULT_SHIPMENT_WAREHOUSE:

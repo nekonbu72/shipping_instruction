@@ -150,19 +150,21 @@ def download_order(isNew: bool,
             EC.element_to_be_clickable((By.NAME, "btn_submit"))
         ).click()
 
+        sleep(3)
+
         wait.until(
             EC.element_to_be_clickable((By.LINK_TEXT, "ダウンロード(XLS)"))
         ).click()
 
-        download_dir = driverConfig.download
-        if download_dir is None:
-            return None
+        # download_dir = driverConfig.download
+        # if download_dir is None:
+        #     return None
 
-        WebDriverWait(driver, 180).until(
-            __DownloadCompleted(download_dir)
+        WebDriverWait(driver, 60).until(
+            __DownloadCompleted(driverConfig.download)
         )
 
-        return _get_first_file_in_dir(download_dir)
+        return _get_first_file_in_dir(driverConfig.download)
 
 
 def upload_spl(isNew: bool,
@@ -392,6 +394,10 @@ def shipping_instruction(orders: List[Order],
                 wait.until(
                     EC.element_to_be_clickable((By.NAME, "btn_submit"))
                 ).submit()
+
+                WebDriverWait(driver, 60).until(
+                    __DownloadCompleted(driverConfig.download)
+                )
 
                 wait.until(
                     EC.presence_of_element_located(
